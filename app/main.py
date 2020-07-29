@@ -33,7 +33,7 @@ def before_request():
         root + 'register'
     ]
 
-    if url in excluded_path:
+    if (url in excluded_path) or ("static/" in url):
         return
     else:
         auth_cookie = request.cookies.get('auth')
