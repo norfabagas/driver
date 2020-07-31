@@ -114,3 +114,49 @@ def logout():
         return resp
     else:
         return
+
+@app.route('/register', methods=["GET", "POST"])
+def register_view():
+    if request.method == "GET":
+        return render_template("register.html")
+    elif request.method == "POST":
+        body = {
+            "name": request.form["name"],
+            "email": request.form["email"],
+            "password": request.form["password"]
+        }
+
+        if "" in body.values():
+            print("meow")
+            flash("Please fill out all field", "danger")
+            return render_template(
+                "register.html",
+                name=request.form["name"],
+                email=request.form["email"]
+            )
+
+        if not is_duplicate(request.form['password'], request.form['password_confirmation']):
+            flash("Password and Password Confirmation does not match", "danger")
+
+            return render_template(
+                "register.html",
+                name=request.form["name"],
+                email=request.form["email"]
+            )
+
+        response = requests.post(os.getenv("AUTH_GATE_URL") + "/register", headers=get_request_header(), json=body)
+        if response.status_code == 201:
+            flash("Register successful! Now Log on with your account", "success")
+
+            return redirect(url_for("login_view"))
+        else:
+            data = response.json()['data']
+            flash(data['error'], "danger")
+
+            return render_template(
+                "register.html",
+                name=request.form["name"],
+                email=request.form["email"]
+            )
+    else:
+        return render_template("500.html", message="Prohibited")

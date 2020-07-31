@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{%endblock %}
+
+{% block content%}
+<form method="POST" action="{{ url_for('register_view') }}">
+    <div class="form-group">
+        <label for="Email">Name:</label>
+        <input type="text" name="name" class="form-control" placeholder="Provide a name" value="{{ name }}">
+    </div>
+    <div class="form-group">
+        <label for="Email">Email Address:</label>
+        <input type="email" name="email" class="form-control" placeholder="Enter email address" value="{{ email }}">
+    </div>
+    <div class="form-group">
+        <label for="Email">Password:</label>
+        <input type="password" name="password" class="form-control" placeholder="Enter a password">
+    </div>
+    <div class="form-group">
+        <label for="Email">Password Confirmation:</label>
+        <input type="password" name="password_confirmation" class="form-control" placeholder="Enter a password again">
+    </div>
+    <button type="submit" class="btn btn-success">Register</button>
+</form>
+{% endblock %}
