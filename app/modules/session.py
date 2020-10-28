@@ -6,12 +6,14 @@ def generate_auth_session(
         expiry: int,
         user_id: str,
         name: str,
-        email: str):
+        email: str,
+        token: str):
     session[user_id] = {
         'authorized': authorized_status,
         'exp': expiry,
         'name': name,
-        'email': email
+        'email': email,
+        'token': token
     }
 
 def is_session_valid(user_id) -> bool:

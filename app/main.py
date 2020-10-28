@@ -83,7 +83,8 @@ def login_view():
                 decoded_jwt['exp'],
                 decoded_jwt['user_id'],
                 data['name'],
-                data['email']
+                data['email'],
+                data['token']
             )
 
             resp = make_response(
@@ -160,3 +161,16 @@ def register_view():
             )
     else:
         return render_template("500.html", message="Prohibited")
+
+@app.route("/profile", methods=['GET'])
+def profile_view():
+    headers = {
+        'Authorization': 'Bearer ' + session.get(request.cookies.get('auth'))['token']
+    }
+    response = requests.get(os.getenv("AUTH_SERVICE_URL") + "/v1/user", headers=headers)
+    if response.status_code == 200:
+        data = response.json()['data']
+
+        return render_template("profile.html", data=data)
+    else:
+        return render_template("500.html", message="Error on fetching data")
