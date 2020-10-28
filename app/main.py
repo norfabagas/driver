@@ -72,7 +72,7 @@ def login_view():
             'password': request.form['password']
         }
 
-        response = requests.post(os.getenv("AUTH_GATE_URL") + "/login", headers=headers, json=body)
+        response = requests.post(os.getenv("AUTH_SERVICE_URL") + "/v1/login", headers=headers, json=body)
         if response.status_code == 200:
             data = response.json()['data']
 
@@ -144,7 +144,7 @@ def register_view():
                 email=request.form["email"]
             )
 
-        response = requests.post(os.getenv("AUTH_GATE_URL") + "/register", headers=get_request_header(), json=body)
+        response = requests.post(os.getenv("AUTH_SERVICE_URL") + "/v1/register", headers=get_request_header(), json=body)
         if response.status_code == 201:
             flash("Register successful! Now Log on with your account", "success")
 
