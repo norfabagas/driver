@@ -47,9 +47,22 @@ def before_request():
             flash('You need to login first', 'info')
             return redirect(url_for('login_view'))
 
-@app.route("/", methods=['GET'])
+@app.route("/", methods=['GET', 'POST'])
 def home_view():
-    return render_template("home.html")
+    if request.method == 'GET':
+        return render_template("home.html")
+    if request.method == 'POST':
+        text = request.form['text']
+        category = "NN"
+        lowered = text.lower()
+        if "internet" in lowered:
+            category = "INTERNET"
+        elif "tv" in lowered:
+            category = "IPTV"
+        elif "voice" in lowered:
+            category = "VOICE"
+        
+        return render_template("home.html", category=category)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login_view():
